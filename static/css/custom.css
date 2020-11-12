@@ -1,0 +1,54 @@
+
+p {
+    width: 72rem;
+    max-width: 100%;
+    line-height: 2em;
+}
+
+h1 {
+    font-size: 2.25rem;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+dt {
+    margin-top: 1.25rem;
+}
+
+/* fix anchors disappearing under the fixed header */
+
+a[id]:before {
+    display: block;
+    content: " ";
+    margin-top: -6rem;
+    height: 6rem;
+    visibility: hidden;
+}
+
+/* class for showing examples */
+
+.tool-example {
+    position: relative;
+    padding: .75rem 1.25rem;
+    width: 36rem;
+    margin: .75rem 2rem 1rem 2rem;
+    line-height: 2;
+}
+
+/* .td-content .read-more {
+/* text-decoration:none;
+/* background-color: #03a87c;
+/* color: white;
+/* padding: 4px 8px;
+/* font-family: roboto;
+/* border-radius: 3px;
+/* # font-weight:bold;
+/* }
+ 
+/* .td-content .readmore:hover {
+/* background-color: #029e74;
+/* }
+
