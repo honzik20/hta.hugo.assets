@@ -1,0 +1,57 @@
+
+<script src="/js/popper.min.js" ></script>
+<script src="/js/bootstrap.min.js" ></script>
+
+{{ $offlineSearchIndex := resources.Get "json/offline-search-index.json" | resources.ExecuteAsTemplate "offline-search-index.json" . }}
+{{ $offlineSearch := "const OFFLINE_SEARCH=" | resources.FromString "js/offline.json" }}
+{{ $offlinejs := (slice $offlineSearch $offlineSearchIndex) | resources.Concat "js/offlinemain.js" | resources.Fingerprint "sha512"}}
+<script src="{{ $offlinejs.RelPermalink }}"></script>
+
+{{ $jsBase := resources.Get "js/base.js" }}
+{{ $jsAnchor := resources.Get "js/anchor.js" }}
+{{ $jsSearch := resources.Get "js/search.js" | resources.ExecuteAsTemplate "js/search.js" .Site.Home }}
+{{ if .Site.Params.offlineSearch }}
+{{ $jsSearch = resources.Get "js/offline-search.js" }}
+{{ end }}
+{{ $js := (slice $jsBase $jsAnchor $jsSearch) | resources.Concat "js/main.js" }}
+{{ if .Site.IsServer }}
+<script src="{{ $js.RelPermalink }}"></script>
+{{ else }}
+{{ $js := $js | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}"></script>
+{{ end }}
+{{ with .Site.Params.prism_syntax_highlighting }}
+<!-- scripts for prism -->
+<script src='/js/prism.js'></script>
+{{ end }}
+{{ partial "hooks/body-end.html" . }}
+<script type="text/javascript" async
+        src="/js/MathJax.js">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            }
+        }
+    });
+    MathJax.Hub.Queue(function () {
+        // Fix <code> tags after MathJax finishes running. This is a
+        // hack to overcome a shortcoming of Markdown. Discussion at
+        // https://github.com/mojombo/jekyll/issues/199
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        // Autonumbering by mathjax
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>

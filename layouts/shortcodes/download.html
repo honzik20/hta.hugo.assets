@@ -1,0 +1,2 @@
+{{ $file := $.Page.Resources.GetMatch (.Get 0)}}
+<a href="{{ $file.RelPermalink }}" download class="download"/>{{ (.Get 1) | markdownify }}</a>
